@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer Demo</title>
+    
+    <!-- Load the model-viewer component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .viewer-container {
+            padding: 30px;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 600px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            --progress-bar-color: #667eea;
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .slider-control {
+            grid-column: 1 / -1;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .slider-control label {
+            display: block;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .slider-control input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-control input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .info ul {
+            list-style-position: inside;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            model-viewer {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 3D Model Viewer</h1>
+            <p>Interactive 3D model viewer using Google's model-viewer component</p>
+        </div>
+
+        <div class="viewer-container">
+            <!-- The 3D Model Viewer -->
+			<!-- src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" -->
+            <model-viewer 
+                id="modelViewer"
+				src="annika_lykta_blender_export.glb"
+                alt="A 3D astronaut model"
+                camera-controls
+                auto-rotate
+                auto-rotate-delay="0"
+                interaction-prompt="none"
+                shadow-intensity="1"
+                exposure="1"
+                camera-orbit="45deg 55deg 2.5m"
+                min-camera-orbit="auto auto 1m"
+                max-camera-orbit="auto auto 10m"
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                poster="https://modelviewer.dev/shared-assets/models/astronaut-poster.webp"
+                loading="eager">
+                
+                <!-- AR Button -->
+                <button slot="ar-button" class="control-btn" style="position: absolute; bottom: 16px; right: 16px;">
+                    👓 View in AR
+                </button>
+                
+                <!-- Loading indicator -->
+                <div class="progress-bar" slot="progress-bar">
+                    <div class="update-bar"></div>
+                </div>
+            </model-viewer>
+
+            <!-- Control Buttons -->
+            <div class="controls">
+                <!-- Rotation Speed Slider -->
+                <div class="slider-control">
+                    <label for="rotationSpeed">
+                        🎚️ Rotation Speed: <span class="slider-value" id="speedValue">100%</span>
+                    </label>
+                    <input 
+                        type="range" 
+                        id="rotationSpeed" 
+                        min="10" 
+                        max="200" 
+                        value="100" 
+                        step="10"
+                        oninput="updateRotationSpeed(this.value)">
+                </div>
+                
+                <button class="control-btn" onclick="toggleAutoRotate()">⏸️ Stop Rotation</button>
+                <button class="control-btn" onclick="resetCamera()">🎯 Reset View</button>
+                <button class="control-btn" onclick="toggleAnimation()">▶️ Play Animation</button>
+                <button class="control-btn" onclick="changeModel()">🔄 Change Model</button>
+            </div>
+
+            <!-- Information Section -->
+            <div class="info">
+                <h3>✨ Interactive Features:</h3>
+                <ul>
+                    <li><strong>Rotate:</strong> Click and drag to rotate the model</li>
+                    <li><strong>Zoom:</strong> Use scroll wheel or pinch to zoom in/out</li>
+                    <li><strong>Pan:</strong> Right-click and drag (or two-finger drag on mobile)</li>
+                    <li><strong>AR Mode:</strong> View the model in your real environment (mobile devices)</li>
+                    <li><strong>Auto-rotate:</strong> Watch the model spin automatically</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modelViewer = document.getElementById('modelViewer');
+        let isRotating = true;
+        let currentModelIndex = 0;
+
+        // Array of sample models
+        const models = [
+            {
+                src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+                name: 'Astronaut'
+            },
+            {
+                src: 'https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb',
+                name: 'Neil Armstrong'
+            },
+            {
+                src: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb',
+                name: 'Robot'
+            }
+        ];
+
+        // Toggle auto-rotation
+        function toggleAutoRotate() {
+            const button = event.target;
+            if (modelViewer.hasAttribute('auto-rotate')) {
+                modelViewer.removeAttribute('auto-rotate');
+                modelViewer.setAttribute('interaction-prompt', 'auto');
+                button.textContent = '▶️ Start Rotation';
+                isRotating = false;
+            } else {
+                modelViewer.setAttribute('auto-rotate', '');
+                modelViewer.setAttribute('interaction-prompt', 'none');
+                button.textContent = '⏸️ Stop Rotation';
+                isRotating = true;
+            }
+        }
+
+        // Update rotation speed
+        function updateRotationSpeed(value) {
+            const speedValue = document.getElementById('speedValue');
+            speedValue.textContent = value + '%';
+            
+            // Calculate rotation period based on percentage
+            // Default is 10 seconds (10000ms) at 100%
+            // Formula: period = (10000ms * 100) / value
+            const rotationPeriod = (10000 * 100) / value;
+            
+            modelViewer.setAttribute('rotation-per-second', (360 / (rotationPeriod / 1000)) + 'deg');
+        }
+
+        // Reset camera to default position
+        function resetCamera() {
+            modelViewer.cameraOrbit = '45deg 55deg 2.5m';
+            modelViewer.fieldOfView = '45deg';
+        }
+
+        // Toggle animation if available
+        function toggleAnimation() {
+            const availableAnimations = modelViewer.availableAnimations;
+            if (availableAnimations && availableAnimations.length > 0) {
+                if (modelViewer.paused) {
+                    modelViewer.play();
+                } else {
+                    modelViewer.pause();
+                }
+            } else {
+                alert('This model has no animations available.');
+            }
+        }
+
+        // Change to next model
+        function changeModel() {
+            currentModelIndex = (currentModelIndex + 1) % models.length;
+            modelViewer.src = models[currentModelIndex].src;
+            console.log('Loading model:', models[currentModelIndex].name);
+        }
+
+        // Event listeners for model loading
+        modelViewer.addEventListener('load', () => {
+            console.log('Model loaded successfully!');
+        });
+
+        modelViewer.addEventListener('error', (event) => {
+            console.error('Error loading model:', event);
+        });
+
+        // Log when model is ready
+        modelViewer.addEventListener('model-visibility', (event) => {
+            console.log('Model visibility changed:', event.detail.visible);
+        });
+    </script>
+</body>
+</html>
